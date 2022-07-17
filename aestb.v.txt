@@ -1,0 +1,31 @@
+ 
+////////////////////////////////////////////////////////////////////////////////
+
+module tb;
+ reg clk,rst,ld;
+  reg [127:0] key;
+  reg [127:0]text_in;
+  wire [127:0] text_out;
+  wire done;
+  AES_128_pipelined DUT(clk,rst,ld,done,key,text_in,text_out);
+  initial 
+    begin
+      $dumpfile("dump.vcd");
+      $dumpvars(1);
+      clk=0;
+      rst=1;
+      ld=1;
+      key = 128'h11100102030405060708090a0b0c0d0e;
+   text_in= 128'h1110112233445566778899aabbccddee;
+      #100;
+		ld=0;
+      rst=0;
+      #100;
+      $display("text_in = %0h",text_in);
+      $display("key = %0h",key);
+      $display("text_out = %0h",text_out);
+      $display("done = %0h",done);
+    end 
+  always clk=#10~clk;
+endmodule
+
